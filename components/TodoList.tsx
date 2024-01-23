@@ -17,7 +17,7 @@ const TodoList = () => {
       </div>
       <TaskItem/>
       <Input type="text" onChange={handleChange} />
-      <Button label="Add task" onClick={onClick} disabled={false}/>
+      <Button label="Add task" onClick={onClick} disabled={false} authWidth={false} authEffect={false}/>
     </div>
   );
 };

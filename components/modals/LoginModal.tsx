@@ -23,7 +23,7 @@ const LoginModal = () => {
       <div
         onClick={async () => {
           signIn("google");
-          await loginModal.onClose;
+          loginModal.onClose;
         }}
         className="w-full flex items-center justify-center gap-2 p-4 border border-neutral-700 rounded-md"
       >

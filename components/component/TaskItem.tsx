@@ -1,8 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import TaskOptions from "./TaskOptions";
+import useTasks from "@/hooks/useTaskList";
 
-const TaskItem = () => {
+interface TaskItemProps {
+  allData: Record<string, any>;
+  toggleComplete: (taskId: number, status: string) => void;
+
+}
+
+const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
+
   return (
     <React.Fragment>
       <AnimatePresence>
@@ -41,7 +49,7 @@ const TaskItem = () => {
               />
 
               <motion.div
-                // animate={task.status}
+                animate={allData.status}
                 variants={{
                   checked: {
                     scale: [1, 1.15, 1],
@@ -56,6 +64,12 @@ const TaskItem = () => {
                   ease: "easeIn",
                 }}
                 className="w-5 h-5 border border-gray-300 rounded-md flex items-center justify-center focus-within:border-blue-500"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  
+                  console.log(allData.id, allData.status)
+                  toggleComplete(allData.id, allData.status);
+                }}
               >
                 <svg
                   width="15"
@@ -63,10 +77,11 @@ const TaskItem = () => {
                   viewBox="0 0 15 15"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  color="white"
                 >
                   <motion.path
                     initial={{ opacity: 0, pathLength: 0 }}
-                    // animate={task.status}
+                    animate={allData.status}
                     transition={{
                       duration: 0.5,
                       delay: 0.1,
@@ -92,7 +107,7 @@ const TaskItem = () => {
               </motion.div>
               <motion.span
                 initial={{ opacity: 1 }}
-                // animate={task.status}
+                animate={allData.status}
                 variants={{
                   checked: {
                     opacity: 0.8,
@@ -106,10 +121,10 @@ const TaskItem = () => {
                 transition={{ delay: 0.2, duration: 0.5 }}
                 className={`text-white ml-5 text-lg`}
               >
-                {/* {task.value} */}Hello
+                {allData?.title}
               </motion.span>
             </label>
-              <TaskOptions />
+            <TaskOptions />
           </motion.div>
         </div>
       </AnimatePresence>

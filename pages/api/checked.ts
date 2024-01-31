@@ -5,8 +5,7 @@ import { without } from "lodash";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
   try {
-    if(req.method === "POST"){
-      const { currentUser } = await sessionAuth(req);
+    if(req.method === "PATCH"){
       const { taskId } = req.body;
 
       const existingTask = await prisma.task.findUnique({
@@ -19,47 +18,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw new Error("Task not found");  
       }
 
-      const user = await prisma.user.update({
-        where: {
-          email: currentUser.email || "",
-        },
-        data: {
-          completedTaskIds: {
-            push: taskId
-          }
-        }
-      })
-
-      return res.status(200).json(user);
-    }
-
-    if(req.method === "DELETE"){
-      const {currentUser} = await sessionAuth(req);
-
-      const { taskId } = req.body;
-
-      const existingTask = await prisma.task.findUnique({
+      const updatedTask = await prisma.task.update({
         where: {
           id: taskId
-        }
-      })
-
-      if(!existingTask){
-        throw new Error("Task not found!")
-      }
-
-      const updatedCompletedTaskIds = without(currentUser.completedTaskIds, taskId)
-
-      const updatedUser = await prisma.user.update({
-        where: {
-          email: currentUser.email || "",
         },
         data: {
-          completedTaskIds: updatedCompletedTaskIds,
+          isCompleted:!existingTask.isCompleted
         }
       })
 
-      return res.status(200).json(updatedUser);
+      return res.status(200).json(updatedTask);
     }
 
 

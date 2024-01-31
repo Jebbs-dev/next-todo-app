@@ -8,14 +8,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    
-    const { currentUser } = await sessionAuth(req);
-
     const completedTasks = await prisma.task.findMany({
       where: {
-        id: {
-          in: currentUser?.completedTaskIds
-        }
+        isCompleted: true
       }
     })
 

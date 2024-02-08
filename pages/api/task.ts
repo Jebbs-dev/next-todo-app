@@ -7,13 +7,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { title, status, animate } = req.body;
+    const { title, status, isCompleted } = req.body;
 
     const newTask = await prisma.task.create({
       data: {
         title,
         status,
-        animate
+        isCompleted
       }
     })
 

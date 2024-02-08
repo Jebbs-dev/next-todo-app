@@ -4,8 +4,9 @@ import useLoginModal from "@/hooks/useLoginModal";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import useCurrentUser from "@/hooks/useCurrentUser";
-import TaskProvider from "@/providers/task-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools"
+import { Toaster } from "react-hot-toast";
 
 export default function App({
   Component,
@@ -13,17 +14,20 @@ export default function App({
 }: AppProps) {
   const loginModal = useLoginModal();
 
+  const queryClient = new QueryClient()
+
   return (
     <>
       {/* <RegisterModal/> */}
-
       <SessionProvider session={session}>
-        <TaskProvider>
+        <QueryClientProvider client={queryClient}>
+          {/* <Toaster/> */}
           {loginModal.isOpen && <LoginModal />}
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </TaskProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </SessionProvider>
     </>
   );

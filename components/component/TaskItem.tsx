@@ -1,15 +1,23 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import TaskOptions from "./TaskOptions";
-import useTasks from "@/hooks/useTaskList";
+
+
 
 interface TaskItemProps {
-  allData: Record<string, any>;
-  toggleComplete: (taskId: number, status: string) => void;
-
+  data: Record<string, any>;
+  toggleCheckbox: (taskId: string) => void;
+  isEditable: boolean;
+  // setUpdateTitle: React.Dispatch<React.SetStateAction<string>>
+  deleteTask: (taskId: string) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
+const TaskItem: React.FC<TaskItemProps> = ({
+  data,
+  toggleCheckbox,
+  isEditable,
+  deleteTask
+}) => {
 
   return (
     <React.Fragment>
@@ -17,16 +25,16 @@ const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
         <div className="relative" id={`id`}>
           <motion.div
             initial={{ opacity: 0, backgroundColor: "transparent" }}
-            // animate={task.status}
+            animate={data.status}
             variants={{
               checked: {
                 opacity: [0, 1, 0],
                 backgroundColor: "#4b5563",
               },
-              unchecked: {
-                opacity: [0, 1, 0],
-                backgroundColor: "#4b5563",
-              },
+              // unchecked: {
+              //   opacity: [0, 1, 0],
+              //   backgroundColor: "#4b5563",
+              // },
             }}
             transition={{
               duration: 0.5,
@@ -49,7 +57,7 @@ const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
               />
 
               <motion.div
-                animate={allData.status}
+                animate={data.status}
                 variants={{
                   checked: {
                     scale: [1, 1.15, 1],
@@ -66,9 +74,7 @@ const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
                 className="w-5 h-5 border border-gray-300 rounded-md flex items-center justify-center focus-within:border-blue-500"
                 onClick={(event) => {
                   event.stopPropagation();
-                  
-                  console.log(allData.id, allData.status)
-                  toggleComplete(allData.id, allData.status);
+                  toggleCheckbox(data.id);
                 }}
               >
                 <svg
@@ -81,7 +87,7 @@ const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
                 >
                   <motion.path
                     initial={{ opacity: 0, pathLength: 0 }}
-                    animate={allData.status}
+                    animate={data.status}
                     transition={{
                       duration: 0.5,
                       delay: 0.1,
@@ -107,10 +113,10 @@ const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
               </motion.div>
               <motion.span
                 initial={{ opacity: 1 }}
-                animate={allData.status}
+                animate={data.status}
                 variants={{
                   checked: {
-                    opacity: 0.8,
+                    opacity: 0.5,
                     textDecoration: "line-through",
                   },
                   unchecked: {
@@ -121,10 +127,18 @@ const TaskItem: React.FC<TaskItemProps> = ({allData, toggleComplete}) => {
                 transition={{ delay: 0.2, duration: 0.5 }}
                 className={`text-white ml-5 text-lg`}
               >
-                {allData?.title}
+                <div
+                  contentEditable={isEditable}
+                  // onInput={(event)=>{
+                  //   setUpdateTitle((event.target as HTMLElement).innerText)
+                  // }}
+                  className="border-none focus:border-0 focus:outline-0"
+                >
+                  {data?.title}
+                </div>
               </motion.span>
             </label>
-            <TaskOptions />
+            <TaskOptions deleteTask={deleteTask} id={data.id} />
           </motion.div>
         </div>
       </AnimatePresence>

@@ -9,7 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const TaskOptions = () => {
+export interface TaskOptionProps {
+  deleteTask: (taskId: string) => void;
+  id: string;
+}
+
+const TaskOptions: React.FC<TaskOptionProps> = ({deleteTask, id}) => {
   return (
     <div className="hover:bg-gray-800 rounded-full flex items-center justify-around p-[2px]">
       <DropdownMenu>
@@ -18,7 +23,7 @@ const TaskOptions = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=>deleteTask(id)}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

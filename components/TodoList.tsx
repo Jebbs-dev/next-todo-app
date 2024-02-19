@@ -12,51 +12,74 @@ import { Task } from "@prisma/client";
 import { useUpdateTaskStatus } from "@/mutations/update-task";
 import { useDeleteTasks } from "@/mutations/delete-task";
 
+import { ClipLoader } from "react-spinners";
+
+import toast from "react-hot-toast";
+
 const TodoList = () => {
   const { data: todoTask, isLoading } = useTasksQuery();
   const { data: fetchedUser } = useUserQuery();
 
   const { mutateAsync: addTaskMutation } = useTaskMutation();
 
-  const { mutateAsync: addToggleCheck } = useUpdateTaskStatus();
+  const { mutateAsync: addTaskUpdate } = useUpdateTaskStatus();
 
-  const {mutateAsync: addDeleteTask} = useDeleteTasks();
+  const { mutateAsync: addDeleteTask } = useDeleteTasks();
 
   const loginModal = useLoginModal();
 
   const [title, setTitle] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [status, setStatus] = useState("unchecked");
-  const [isEditable, setIsEditable] = useState(false)
-  const [updateTitle, setUpdateTitle] = useState("")
-
+  const [isEditable, setIsEditable] = useState(false);
+  const [updateTitle, setUpdateTitle] = useState("");
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    let loadingMessage;
+    return (loadingMessage = (
+      <span className="text-white">
+        <span>
+          <ClipLoader color="white" size={20} />
+        </span>
+        Loading Page...
+      </span>
+    ));
   }
 
   const addTask = async () => {
     if (!fetchedUser) {
       loginModal.onOpen();
     }
+
     try {
       if (title.length > 0) {
-        await addTaskMutation({ title, isCompleted, status });
+        await addTaskMutation({
+          title,
+        });
+
+        toast.success("Task added successfully!");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong!");
     } finally {
       setTitle("");
     }
   };
 
   const toggleCheckbox = async (taskId: string) => {
-    await addToggleCheck(taskId);
+    await addTaskUpdate(taskId);
+  };
+
+  const handleUpdateTitle = async (taskId: string) => {
+    await addTaskUpdate(taskId);
   };
 
   const deleteTask = async (taskId: string) => {
-    await addDeleteTask(taskId)
-  }
+    await addDeleteTask(taskId);
+
+    toast.success("Task deleted successfully!");
+  };
 
   return (
     <div className="w-1/2 px-3 flex flex-col justify-around relative">
@@ -71,8 +94,10 @@ const TodoList = () => {
               data={task}
               toggleCheckbox={toggleCheckbox}
               isEditable={isEditable}
-              // setUpdateTitle={setUpdateTitle}
+              handleUpdateTitle={handleUpdateTitle}
+              setUpdateTitle={setUpdateTitle}
               deleteTask={deleteTask}
+              setIsEditable={setIsEditable}
             />
           ))}
       </div>

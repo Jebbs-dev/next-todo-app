@@ -9,7 +9,7 @@ export const useTaskMutation =()=>{
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async(task: TaskProps) => {
+    mutationFn: async(task: Task) => {
       const response = await axios.post("/api/task", {
         title: task.title,
         isCompleted: task.isCompleted,

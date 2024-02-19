@@ -1,6 +1,7 @@
 import { Task } from "@prisma/client";
 import React, { useMemo } from "react";
 import toast from "react-hot-toast"
+import { ClipLoader } from "react-spinners";
 
 interface CompletedListProps {
   tasks: Task[]
@@ -14,10 +15,16 @@ const CompletedList: React.FC<CompletedListProps> = ({ tasks, isLoading }) => {
     return tasks?.filter((task) => task.isCompleted) || null;
   }, [tasks])
 
-  if(isLoading){
-    // const toastMessage = toast.success("Setting task as completed!")
-    // return toastMessage;
-    return <div>Loading...</div>
+  if (isLoading) {
+    let loadingMessage;
+    return  loadingMessage =  (
+      <span className="text-white p-20">
+        <span>
+          <ClipLoader color="white" size={20} />
+        </span>
+        Loading Page...
+      </span>
+    );
   }
 
   return (

@@ -1,14 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import TaskOptions from "./TaskOptions";
-
-
+import toast from "react-hot-toast";
 
 interface TaskItemProps {
   data: Record<string, any>;
   toggleCheckbox: (taskId: string) => void;
+  handleUpdateTitle: (taskId: string) => void;
   isEditable: boolean;
-  // setUpdateTitle: React.Dispatch<React.SetStateAction<string>>
+  setIsEditable: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateTitle: React.Dispatch<React.SetStateAction<string>>;
   deleteTask: (taskId: string) => void;
 }
 
@@ -16,8 +17,13 @@ const TaskItem: React.FC<TaskItemProps> = ({
   data,
   toggleCheckbox,
   isEditable,
-  deleteTask
+  deleteTask,
+  setUpdateTitle,
+  handleUpdateTitle,
+  setIsEditable
 }) => {
+
+  
 
   return (
     <React.Fragment>
@@ -74,7 +80,16 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 className="w-5 h-5 border border-gray-300 rounded-md flex items-center justify-center focus-within:border-blue-500"
                 onClick={(event) => {
                   event.stopPropagation();
+                  console.log(data.status);
+
                   toggleCheckbox(data.id);
+                  if(data.status !== "checked"){
+                    toast.success("Task completed!");
+                  } else {
+                    toast.success("Task uncompleted!");
+                  }
+
+                  
                 }}
               >
                 <svg
@@ -129,16 +144,21 @@ const TaskItem: React.FC<TaskItemProps> = ({
               >
                 <div
                   contentEditable={isEditable}
-                  // onInput={(event)=>{
-                  //   setUpdateTitle((event.target as HTMLElement).innerText)
-                  // }}
+                  onInput={(event) => {
+                    setUpdateTitle((event.target as HTMLElement).innerText);
+                  }}
+                  onBlur={()=>handleUpdateTitle(data.id)}
                   className="border-none focus:border-0 focus:outline-0"
                 >
                   {data?.title}
                 </div>
               </motion.span>
             </label>
-            <TaskOptions deleteTask={deleteTask} id={data.id} />
+            <TaskOptions
+              deleteTask={deleteTask}
+              setIsEditable={setIsEditable}
+              id={data.id}
+            />
           </motion.div>
         </div>
       </AnimatePresence>

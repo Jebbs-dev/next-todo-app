@@ -21,7 +21,7 @@ export default function App({
       {/* <RegisterModal/> */}
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
-          {/* <Toaster/> */}
+          <Toaster/>
           {loginModal.isOpen && <LoginModal />}
           <Layout>
             <Component {...pageProps} />

@@ -22,8 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           id: taskId
         },
         data: {
-          isCompleted:!existingTask.isCompleted,
+          isCompleted: !existingTask.isCompleted,
           status: existingTask.isCompleted ? "unchecked" : "checked",
+          title: existingTask.title
         }
       })
 

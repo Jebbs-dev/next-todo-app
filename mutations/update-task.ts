@@ -9,7 +9,7 @@ export const useUpdateTaskStatus =()=>{
   return useMutation({
     mutationFn: async(taskId: string) => {
       const response = await axios.patch(`/api/completed`, {
-        taskId,
+        taskId, 
       });
 
       console.log(response.data);

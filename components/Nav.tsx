@@ -3,8 +3,6 @@ import { signOut } from "next-auth/react";
 import { useUserQuery } from "@/queries/fetch-user";
 
 const Nav = () => {
-  const handleClick = () => {};
-
   const { data: fetchedUser } = useUserQuery();
 
   return (

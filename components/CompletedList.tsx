@@ -1,6 +1,5 @@
 import { Task } from "@prisma/client";
 import React, { useMemo } from "react";
-import toast from "react-hot-toast"
 import { ClipLoader } from "react-spinners";
 
 interface CompletedListProps {

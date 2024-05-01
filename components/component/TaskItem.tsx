@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import TaskOptions from "./TaskOptions";
 import toast from "react-hot-toast";
+import useTaskDate from "@/hooks/useTaskStatus";
 
 interface TaskItemProps {
   data: Record<string, any>;
@@ -9,7 +10,7 @@ interface TaskItemProps {
   handleUpdateTitle: (taskId: string) => void;
   isEditable: boolean;
   setIsEditable: React.Dispatch<React.SetStateAction<boolean>>;
-  setUpdateTitle: React.Dispatch<React.SetStateAction<string>>;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
   deleteTask: (taskId: string) => void;
 }
 
@@ -18,12 +19,14 @@ const TaskItem: React.FC<TaskItemProps> = ({
   toggleCheckbox,
   isEditable,
   deleteTask,
-  setUpdateTitle,
+  setTitle,
   handleUpdateTitle,
   setIsEditable
 }) => {
 
-  
+  // const taskCreationDate = new Date(data?.createdAt).toISOString().substring(0, 10);
+  // const today = new Date().toISOString().substring(0, 10)
+  // const { selectDate } = useTaskDate();
 
   return (
     <React.Fragment>
@@ -87,9 +90,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                     toast.success("Task completed!");
                   } else {
                     toast.success("Task uncompleted!");
-                  }
-
-                  
+                  }  
                 }}
               >
                 <svg
@@ -145,7 +146,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 <div
                   contentEditable={isEditable}
                   onInput={(event) => {
-                    setUpdateTitle((event.target as HTMLElement).innerText);
+                    setTitle((event.target as HTMLElement).innerText);
                   }}
                   onBlur={()=>handleUpdateTitle(data.id)}
                   className="border-none focus:border-0 focus:outline-0"

@@ -15,6 +15,7 @@ import { useDeleteTasks } from "@/mutations/delete-task";
 import { ClipLoader } from "react-spinners";
 
 import toast from "react-hot-toast";
+import { MutateTaskData, useUpdateTaskTitle } from "@/mutations/update-task-title";
 
 const TodoList = () => {
   const { data: todoTask, isLoading } = useTasksQuery();
@@ -24,15 +25,17 @@ const TodoList = () => {
 
   const { mutateAsync: addTaskUpdate } = useUpdateTaskStatus();
 
+  const { mutateAsync: addTitleUpdate } = useUpdateTaskTitle();
+
   const { mutateAsync: addDeleteTask } = useDeleteTasks();
 
   const loginModal = useLoginModal();
 
   const [title, setTitle] = useState("");
+  const [status, setStatus] = useState("unchecked")
   const [isCompleted, setIsCompleted] = useState(false);
-  const [status, setStatus] = useState("unchecked");
   const [isEditable, setIsEditable] = useState(false);
-  const [updateTitle, setUpdateTitle] = useState("");
+  const [updateTitle, setUpdateTitle] = useState(title);
 
   if (isLoading) {
     let loadingMessage;
@@ -55,6 +58,8 @@ const TodoList = () => {
       if (title.length > 0) {
         await addTaskMutation({
           title,
+          status,
+          isCompleted,
         });
 
         toast.success("Task added successfully!");
@@ -72,7 +77,11 @@ const TodoList = () => {
   };
 
   const handleUpdateTitle = async (taskId: string) => {
-    await addTaskUpdate(taskId);
+    await addTitleUpdate({
+      title,
+      taskId
+    })
+    setTitle("")
   };
 
   const deleteTask = async (taskId: string) => {
@@ -95,7 +104,7 @@ const TodoList = () => {
               toggleCheckbox={toggleCheckbox}
               isEditable={isEditable}
               handleUpdateTitle={handleUpdateTitle}
-              setUpdateTitle={setUpdateTitle}
+              setTitle={setTitle}
               deleteTask={deleteTask}
               setIsEditable={setIsEditable}
             />

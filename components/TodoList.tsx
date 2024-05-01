@@ -91,9 +91,9 @@ const TodoList = () => {
   };
 
   return (
-    <div className="w-1/2 px-3 py-2 flex flex-col justify-around relative">
-      <div className="h-4/5 overflow-auto">
-        <div className="mt-2 mb-5 top-0 sticky z-20">
+    <div className="w-1/2 px-3 flex flex-col justify-around relative">
+      <div className="h-3/5 overflow-auto">
+        <div className="mb-3 top-0 sticky z-20">
           <h1 className="text-4xl font-semibold text-white">To do Tasks</h1>
         </div>
         {fetchedUser &&
@@ -110,9 +110,10 @@ const TodoList = () => {
             />
           ))}
       </div>
-      <div className="pb-3 mb-4 h-1/5">
+      <div className="mb-4 h-1/5 relative">
         <Input
           type="text"
+        
           onChange={(e) => {
             setTitle(e.target.value);
           }}

@@ -13,7 +13,6 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const loginModal = useLoginModal();
-
   const queryClient = new QueryClient()
 
   return (

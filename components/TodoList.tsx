@@ -91,7 +91,7 @@ const TodoList = () => {
   };
 
   return (
-    <div className="w-1/2 px-3 flex flex-col justify-around relative">
+    <div className="w-1/2 px-3 py-2 flex flex-col justify-around relative">
       <div className="h-4/5 overflow-auto">
         <div className="mt-2 mb-5 top-0 sticky z-20">
           <h1 className="text-4xl font-semibold text-white">To do Tasks</h1>

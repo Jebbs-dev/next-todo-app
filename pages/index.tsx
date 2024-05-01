@@ -1,5 +1,4 @@
 import { useTasksQuery } from "@/queries/fetch-task";
-import { useUserQuery } from "@/queries/fetch-user";
 import CompletedList from "@/components/CompletedList";
 import { Task } from "@prisma/client";
 import TodoList from "@/components/TodoList";

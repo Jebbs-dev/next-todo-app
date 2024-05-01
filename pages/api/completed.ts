@@ -5,7 +5,7 @@ import prisma from "@/lib/prismadb"
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
   try {
     if(req.method === "PATCH"){
-      const { taskId } = req.body;
+      const { taskId, title } = req.body;
 
       const existingTask = await prisma.task.findUnique({
         where: {
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           isCompleted: !existingTask.isCompleted,
           status: existingTask.isCompleted ? "unchecked" : "checked",
-          title: existingTask.title
+          title
         }
       })
 

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios";
 
-
 export const useUpdateTaskStatus =()=>{
 
   const queryClient = useQueryClient();
@@ -11,8 +10,7 @@ export const useUpdateTaskStatus =()=>{
       const response = await axios.patch(`/api/completed`, {
         taskId, 
       });
-
-      console.log(response.data);
+      
       return response.data;
     },
     onSuccess:()=>{

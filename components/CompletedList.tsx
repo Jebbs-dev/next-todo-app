@@ -28,7 +28,7 @@ const CompletedList: React.FC<CompletedListProps> = ({ tasks, isLoading }) => {
 
   return (
     <div className="w-1/2 px-3">
-      <div className="mt-2 mb-5 top-0 sticky z-20">
+      <div className="mt-3 mb-3 top-0 sticky z-20">
           <h1 className="text-4xl font-semibold text-white">Completed Tasks</h1>
         </div>
       {completedTasks?.map((task: Record<string, any>)=>(
